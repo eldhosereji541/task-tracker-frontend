@@ -5,6 +5,7 @@ export const GET_TASKS = gql`
     tasks(filter: $filter) {
       id
       title
+      description
       status
       priority
     }
@@ -16,6 +17,7 @@ export const CREATE_TASK = gql`
     createTask(input: $input) {
       id
       title
+      description
     }
   }
 `;export const REGISTER = gql`
