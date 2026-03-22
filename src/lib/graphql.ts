@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 
+// tsks queries and mutations
 export const GET_TASKS = gql`
   query Tasks($filter: TaskFilter) {
     tasks(filter: $filter) {
@@ -19,8 +20,29 @@ export const CREATE_TASK = gql`
       title
       description
     }
+  } 
+`;
+
+export const UPDATE_TASK = gql`
+  mutation UpdateTask($id: ID!, $input: UpdateTaskInput!) {
+    updateTask(id: $id, input: $input) {
+      id
+      title
+      description
+      status
+      priority
+    }
   }
-`;export const REGISTER = gql`
+`;
+
+export const DELETE_TASK = gql`
+  mutation DeleteTask($id: ID!) {
+    deleteTask(id: $id)
+  }
+`;
+
+// auth queries and mutations
+export const REGISTER = gql`
   mutation Register($input: RegisterInput!) {
     register(input: $input) {
       token

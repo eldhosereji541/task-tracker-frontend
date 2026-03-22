@@ -1,6 +1,6 @@
 "use client";
 
-import { LOGIN, REGISTER } from "@/src/lib/graphql";
+import {  LOGIN, REGISTER } from "@/src/lib/graphql";
 import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 
@@ -36,6 +36,7 @@ export default function Home() {
       console.error(error);
     }
   }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-800">
