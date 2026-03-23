@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Task Tracker — Frontend
+
+Next.js frontend for the Task Tracker application. Communicates with the [task-tracker-backend](../task-tracker-backend) via GraphQL.
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **React 19**
+- **Apollo Client** — GraphQL data fetching
+- **Tailwind CSS v4** — styling
+- **TypeScript**
+- **Docker** — containerised dev environment
+
+## Prerequisites
+
+- [Node.js 20+](https://nodejs.org/) (for local dev without Docker)
+- [Docker](https://www.docker.com/) + Docker Compose (for Docker dev)
+- Backend running at `http://localhost:8080` (see [task-tracker-backend](../task-tracker-backend))
 
 ## Getting Started
 
-First, run the development server:
+### Option 1 — Docker (recommended)
+
+The dev container mounts your source code, so changes hot-reload automatically.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up --build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+To stop:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker compose down
+```
 
-## Learn More
+> **VSCode :** The dev container starts automatically when you open this folder, via `.vscode/tasks.json`. 
 
-To learn more about Next.js, take a look at the following resources:
+### Option 2 — Local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+Copy `.env.example` to `.env.local` and adjust as needed:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+cp .env.example .env.local
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Default | Description |
+|---|---|---|
+| `NEXT_PUBLIC_GRAPHQL_URL` | `http://localhost:8080/query` | Backend GraphQL endpoint |
+
+## Project Structure
+
+```
+├── app/
+│   ├── layout.tsx          # Root layout (wraps with ApolloProvider)
+│   ├── page.tsx            # Login / Register page (/)
+│   ├── providers.tsx       # Apollo Client provider
+│   └── tasks/
+│       └── page.tsx        # Task management page (/tasks)
+├── src/
+│   ├── components/
+│   │   ├── Header.tsx      # Top nav with logout
+│   │   ├── TaskForm.tsx    # Create task sidebar form
+│   │   ├── TaskItem.tsx    # Individual task card
+│   │   └── TaskList.tsx    # Task list with filters
+│   ├── lib/
+│   │   ├── apollo.ts       # Apollo Client setup (auth link + HTTP link)
+│   │   └── graphql.ts      # GraphQL queries and mutations
+│   └── types.ts            # Shared TypeScript types (Task, Priority, Status)
+├── docker/
+│   ├── Dockerfile          # Production image
+│   └── Dockerfile.dev      # Development image (hot reload)
+├── docker-compose.yml
+└── .env.example
+```
+
+## Features
+
+- **Authentication** — Register and login with JWT stored in `localStorage`
+- **Task management** — Create, update status, and delete tasks
+- **Filtering** — Filter tasks by status (TODO / IN_PROGRESS / COMPLETED) and priority (LOW / MEDIUM / HIGH)
+- **Responsive layout** — Sidebar form + scrollable task list

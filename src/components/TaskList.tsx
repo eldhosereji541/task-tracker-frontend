@@ -1,6 +1,18 @@
 "use client";
 
 import TaskItem from "./TaskItem";
+import { Task } from "@/src/types";
+
+interface TaskListProps {
+  tasks: Task[];
+  status: string;
+  setStatus: (value: string) => void;
+  priority: string;
+  setPriority: (value: string) => void;
+  onFilter: () => void;
+  onUpdate: (id: string, input: Partial<Omit<Task, "id">>) => void;
+  onDelete: (id: string) => void;
+}
 
 export default function TaskList({
   tasks,
@@ -9,13 +21,13 @@ export default function TaskList({
   priority,
   setPriority,
   onFilter,
-  onStatusUpdate,
+  onUpdate,
   onDelete,
-}: any) {
+}: TaskListProps) {
   return (
     <div className="bg-gray-800 p-6 md:w-3/4">
-      
-      {/* 🔥 Filters */}
+
+      {/* Filters */}
       <div className="mb-4 flex flex-wrap items-center gap-3 bg-gray-900 p-3 rounded-lg shadow">
         <select
           className="border border-gray-600 bg-gray-800 text-white p-2 rounded"
@@ -47,13 +59,13 @@ export default function TaskList({
         </button>
       </div>
 
-      {/* 🔥 Task List */}
+      {/* Task List */}
       <div className="mt-4 space-y-2 overflow-y-auto max-h-[calc(100vh-150px)]">
-        {tasks?.map((t: any) => (
+        {tasks?.map((t) => (
           <TaskItem
             key={t.id}
             t={t}
-            onStatusUpdate={onStatusUpdate}
+            onUpdate={onUpdate}
             onDelete={onDelete}
           />
         ))}

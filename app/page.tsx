@@ -1,6 +1,6 @@
 "use client";
 
-import {  LOGIN, REGISTER } from "@/src/lib/graphql";
+import { LOGIN, REGISTER } from "@/src/lib/graphql";
 import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 
@@ -31,7 +31,7 @@ export default function Home() {
       if (!data) return;
       const token = isLogin ? (data as { login: { token: string } }).login.token : (data as { register: { token: string } }).register.token;
       localStorage.setItem("token", token);
-      !isLogin ? window.location.reload() : window.location.href = "/tasks";
+      window.location.href = "/tasks";
     } catch (error) {
       console.error(error);
     }

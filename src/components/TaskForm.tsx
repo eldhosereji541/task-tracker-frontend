@@ -1,5 +1,5 @@
 "use client";
-// todo: move the type and interface definitions to a separate file
+
 interface TaskFormProps {
   title: string;
   setTitle: (value: string) => void;
@@ -47,6 +47,7 @@ export default function TaskForm({
           className="w-full border p-2.5 rounded-lg h-32"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description (optional)..."
         />
 
         <button

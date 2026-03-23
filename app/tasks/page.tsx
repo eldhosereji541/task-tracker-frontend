@@ -8,7 +8,7 @@ import {
 } from "@/src/lib/graphql";
 import { useQuery, useMutation } from "@apollo/client/react";
 import { useState } from "react";
-import { Trash2, CheckCircle2 } from "lucide-react";
+import { Task } from "@/src/types";
 import TaskList from "@/src/components/TaskList";
 import TaskForm from "@/src/components/TaskForm";
 import Header from "@/src/components/Header";
@@ -52,17 +52,9 @@ export default function TasksPage() {
     refetch();
   };
 
-  // status update handler
-  const handleStatusUpdate = async (id: string, status: string) => {
+  const handleUpdate = async (id: string, input: Partial<Omit<Task, "id">>) => {
     try {
-      await updateTask({
-        variables: {
-          id,
-          input: {
-            status,
-          },
-        },
-      });
+      await updateTask({ variables: { id, input } });
       refetch();
     } catch (error) {
       console.error(error);
@@ -99,7 +91,12 @@ export default function TasksPage() {
 
         <TaskList
           tasks={data?.tasks}
-          onStatusUpdate={handleStatusUpdate}
+          status={status}
+          setStatus={setStatus}
+          priority={priority}
+          setPriority={setPriority}
+          onFilter={refetch}
+          onUpdate={handleUpdate}
           onDelete={handleDelete}
         />
       </div>

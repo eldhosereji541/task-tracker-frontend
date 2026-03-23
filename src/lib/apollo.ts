@@ -1,12 +1,10 @@
-"use client";
+import { ApolloLink, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
-import { ApolloLink } from "@apollo/client";
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 const httpLink = new HttpLink({
-  uri: "http://localhost:8080/query",
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL ?? "http://localhost:8080/query",
 });
 
-const athLink = new ApolloLink((operation, forward) => {
+const authLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem("token");
   if (token) {
     operation.setContext({
@@ -19,6 +17,6 @@ const athLink = new ApolloLink((operation, forward) => {
 });
 
 export const client = new ApolloClient({
-    link: athLink.concat(httpLink),
-    cache: new InMemoryCache(),
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });
