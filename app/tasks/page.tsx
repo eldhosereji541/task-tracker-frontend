@@ -12,8 +12,20 @@ import { Task } from "@/src/types";
 import TaskList from "@/src/components/TaskList";
 import TaskForm from "@/src/components/TaskForm";
 import Header from "@/src/components/Header";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function TasksPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/");
+    }
+  }, [router]);
+
+
   const [createTask] = useMutation(CREATE_TASK);
 
   const [title, setTitle] = useState("");
